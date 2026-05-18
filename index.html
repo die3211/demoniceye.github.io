@@ -1,228 +1,375 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>Demoniceye - Killer Lobby</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demoniceye Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<style>
-body {
-  margin: 0;
-  height: 100vh;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-  cursor: crosshair;
-  background: black;
-}
+        body {
+            background: #0a0a0c;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            direction: ltr;
+            overflow: hidden;
+            position: relative;
+        }
 
-/* ===== BACKGROUND (PUT WESKER IMAGE HERE) ===== */
-.bg {
-  position: fixed;
-  inset: 0;
-  background-image: url("Wesker.png");
-  background-size: cover;
-  background-position: center;
-  filter: brightness(0.35) contrast(1.2) saturate(0.8);
-  transform: scale(1.05);
-}
+        /* حاوية الخلفية الثابتة بصيغة PNG مع تأثير البرق */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.8)), 
+                        url('bg.png') no-repeat center center/cover;
+            z-index: -2;
+            animation: lightning 8s ease-in-out infinite;
+        }
 
-/* cinematic dark overlay */
-.bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at center,
-    rgba(0,0,0,0.2),
-    rgba(0,0,0,0.88)
-  );
-}
+        @keyframes lightning {
+            0%, 94%, 98%, 100% { filter: brightness(1); }
+            95% { filter: brightness(1.4) contrast(1.1); }
+            97% { filter: brightness(1.2); }
+        }
 
-/* scanlines like DBD */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(255,0,0,0.05),
-    rgba(0,0,0,0.02) 2px,
-    transparent 4px
-  );
-  animation: scan 6s linear infinite;
-  pointer-events: none;
-}
+        /* تأثير Mطر متحرك */
+        .rain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
 
-@keyframes scan {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(40px); }
-}
+        .drop {
+            position: absolute;
+            background: linear-gradient(transparent, rgba(255, 255, 255, 0.2));
+            width: 1px;
+            animation: fall linear infinite;
+        }
 
-/* ===== UI LAYER ===== */
-.ui {
-  position: relative;
-  z-index: 2;
-  color: #eaeaea;
-}
+        @keyframes fall {
+            0% { transform: translateY(-120vh); }
+            100% { transform: translateY(120vh); }
+        }
 
-/* LEFT MENU */
-.menu {
-  position: absolute;
-  left: 80px;
-  top: 120px;
-  width: 420px;
-}
+        /* حاوية الكرت الأساسية مع الخطين المتحركين */
+        .profile-card-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 460px;
+            border-radius: 24px;
+            padding: 3px;
+            background: rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+        }
 
-.title {
-  font-size: 36px;
-  letter-spacing: 8px;
-  color: #ff2a2a;
-  text-transform: uppercase;
-}
+        .profile-card-wrapper::before {
+            content: '';
+            position: absolute;
+            width: 160%;
+            height: 160%;
+            background: conic-gradient(
+                transparent, #eb222a 10%, transparent 25%, 
+                transparent, #eb222a 60%, transparent 75%
+            );
+            top: -30%;
+            left: -30%;
+            animation: rotateBorder 3.5s linear infinite;
+        }
 
-.subtitle {
-  font-size: 11px;
-  opacity: 0.6;
-  letter-spacing: 3px;
-  margin-top: 6px;
-}
+        @keyframes rotateBorder {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-.hr {
-  height: 1px;
-  background: #2b0000;
-  margin: 18px 0;
-}
+        /* الكرت الداخلي بأسلوب الزجاج المضبّب */
+        .profile-card {
+            position: relative;
+            background: rgba(12, 12, 15, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 22px;
+            padding: 40px 30px;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
 
-.item {
-  padding: 12px;
-  margin-top: 10px;
-  border: 1px solid #2b0000;
-  background: rgba(20,0,0,0.4);
-  letter-spacing: 2px;
-  transition: 0.2s;
-}
+        /* حاوية صورة ليون PNG مع توهج أحمر */
+        .avatar-container {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px;
+            position: relative;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(180deg, #eb222a, #220506);
+            box-shadow: 0 0 25px rgba(235, 34, 42, 0.35);
+        }
 
-.item:hover {
-  border-color: #ff2a2a;
-  background: rgba(255,0,0,0.12);
-  transform: translateX(6px);
-}
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            background: #111;
+        }
 
-/* RIGHT PANEL */
-.panel {
-  position: absolute;
-  right: 80px;
-  top: 120px;
-  width: 320px;
-}
+        /* الاسم والعبارة */
+        .username {
+            color: #eb222a;
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 15px rgba(235, 34, 42, 0.3);
+            text-align: center;
+        }
 
-.box {
-  padding: 14px;
-  border: 1px solid #2b0000;
-  background: rgba(10,0,0,0.6);
-  margin-bottom: 12px;
-}
+        .tagline {
+            color: #b3b3b3;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
 
-.label {
-  font-size: 10px;
-  color: #ff2a2a;
-  letter-spacing: 2px;
-}
+        .tagline::before, .tagline::after {
+            content: "•";
+            color: #eb222a;
+            font-size: 1.2rem;
+        }
 
-.value {
-  margin-top: 6px;
-  font-size: 13px;
-}
+        /* خط الفاصل */
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
 
-.heartbeat {
-  color: #ff2a2a;
-  animation: pulse 1.2s infinite;
-}
+        .divider .line {
+            height: 1px;
+            flex-grow: 1;
+            background: linear-gradient(90deg, transparent, rgba(235, 34, 42, 0.4), transparent);
+        }
 
-@keyframes pulse {
-  0% { opacity: 0.3; }
-  50% { opacity: 1; }
-  100% { opacity: 0.3; }
-}
-</style>
+        /* حجم ومظهر شعار الـ SVG الثابت */
+        .umbrella-mini-logo {
+            width: 34px;
+            height: 34px;
+            margin: 0 15px;
+            filter: drop-shadow(0 0 5px rgba(235, 34, 42, 0.8));
+        }
+
+        .section-title {
+            color: #eb222a;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        /* صندوق نبذة عني */
+        .about-box {
+            background: rgba(8, 8, 10, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 25px;
+        }
+
+        .about-box p {
+            color: #cccccc;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* شبكة الأزرار */
+        .connect-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* تصميم الأزرار */
+        .connect-button {
+            background: rgba(8, 8, 10, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 14px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.25s ease-in-out;
+        }
+
+        .connect-button:hover {
+            background: rgba(235, 34, 42, 0.08);
+            border-color: rgba(235, 34, 42, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(235, 34, 42, 0.1);
+        }
+
+        .connect-button i {
+            font-size: 1.8rem;
+            color: #ffffff;
+            transition: transform 0.3s ease;
+        }
+
+        .connect-button:hover i { transform: scale(1.1); }
+
+        .connect-info .platform-name {
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 600;
+            display: block;
+        }
+
+        .connect-info .user-handle {
+            color: #777777;
+            font-size: 0.8rem;
+            margin-top: 2px;
+            display: block;
+        }
+
+        /* الحقوق */
+        .footer-credits {
+            color: #444444;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .footer-credits::before, .footer-credits::after {
+            content: "";
+            height: 1px;
+            width: 40px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- BACKGROUND -->
-<div class="bg"></div>
+    <audio id="rain-audio" loop>
+        <source src="rain.wav" type="audio/wav">
+    </audio>
 
-<!-- UI -->
-<div class="ui">
+    <div class="background-container"></div>
+    <div class="rain-container" id="rain"></div>
 
-  <!-- LEFT MENU -->
-  <div class="menu">
-    <div class="title">KILLER</div>
-    <div class="subtitle">ENTITY LOBBY ACTIVE</div>
+    <div class="profile-card-wrapper">
+        <div class="profile-card">
+            
+            <div class="avatar-container">
+                <img src="leon.png" alt="Leon S. Kennedy">
+            </div>
 
-    <div class="hr"></div>
+            <h1 class="username">Demoniceye</h1>
+            <p class="tagline">Survival is just the beginning.</p>
 
-    <div class="item">PLAY</div>
-    <div class="item">LOADOUT</div>
-    <div class="item">PROFILE</div>
+            <div class="divider">
+                <div class="line"></div>
+                <svg class="umbrella-mini-logo" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" fill="#ffffff" />
+                    
+                    <path d="M50,50 L30,4 A46,46 0 0,1 70,4 Z" fill="#eb222a" /> <path d="M50,50 L70,96 A46,46 0 0,1 30,96 Z" fill="#eb222a" /> <path d="M50,50 L96,30 A46,46 0 0,1 96,70 Z" fill="#eb222a" /> <path d="M50,50 L4,70 A46,46 0 0,1 4,30 Z" fill="#eb222a" /> <circle cx="50" cy="50" r="46" fill="none" stroke="#111115" stroke-width="2" />
+                    <line x1="50" y1="4" x2="50" y2="96" stroke="#111115" stroke-width="1.5" />
+                    <line x1="4" y1="50" x2="96" y2="50" stroke="#111115" stroke-width="1.5" />
+                </svg>
+                <div class="line"></div>
+            </div>
 
-    <div class="item" onclick="window.open('https://steamcommunity.com/id/Demons-eye')">
-      STEAM PROFILE
+            <div class="section-title">
+                <i class="fa-regular fa-user"></i> About Me
+            </div>
+            <div class="about-box">
+                <p>Resident Evil fanatic. Games, darkness, and endless determination.</p>
+            </div>
+
+            <div class="section-title">
+                <i class="fa-solid fa-link"></i> Connect
+            </div>
+            
+            <div class="connect-grid">
+                <a href="https://steamcommunity.com/id/demons-eye/" target="_blank" class="connect-button">
+                    <i class="fa-brands fa-steam"></i>
+                    <div class="connect-info">
+                        <span class="platform-name">Steam</span>
+                        <span class="user-handle">Demons-eye</span>
+                    </div>
+                </a>
+
+                <a href="https://discord.com/users/321059127172530178" target="_blank" class="connect-button">
+                    <i class="fa-brands fa-discord" style="color: #5865F2;"></i>
+                    <div class="connect-info">
+                        <span class="platform-name">Discord</span>
+                        <span class="user-handle">View Profile</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="footer-credits">
+                © 2026 Demoniceye
+            </div>
+        </div>
     </div>
 
-    <div class="item" onclick="window.open('https://discord.com/users/321059127172530178')">
-      DISCORD PROFILE
-    </div>
-  </div>
+    <script>
+        const rainContainer = document.getElementById('rain');
+        const maxDrops = 60;
 
-  <!-- RIGHT PANEL -->
-  <div class="panel">
+        for (let i = 0; i < maxDrops; i++) {
+            const drop = document.createElement('div');
+            drop.classList.add('drop');
+            drop.style.left = `${Math.random() * 100}vw`;
+            drop.style.height = `${Math.random() * 20 + 15}px`;
+            drop.style.animationDuration = `${Math.random() * 0.5 + 0.5}s`;
+            drop.style.animationDelay = `${Math.random() * 2}s`;
+            rainContainer.appendChild(drop);
+        }
 
-    <div class="box">
-      <div class="label">NAME</div>
-      <div class="value">DEMONICEYE</div>
-    </div>
+        const rainAudio = document.getElementById('rain-audio');
+        rainAudio.volume = 0.4; 
 
-    <div class="box">
-      <div class="label">DISCORD STATUS</div>
-      <div class="value heartbeat" id="status">SCANNING</div>
-    </div>
+        function startAudio() {
+            rainAudio.play().catch(error => console.log("بانتظار التفاعل..."));
+            document.removeEventListener('click', startAudio);
+            document.removeEventListener('keydown', startAudio);
+        }
 
-    <div class="box">
-      <div class="label">ACTIVITY (RPC)</div>
-      <div class="value" id="activity">DETECTING</div>
-    </div>
-
-    <div class="box">
-      <div class="label">STEAM ID</div>
-      <div class="value">Demons-eye</div>
-    </div>
-
-  </div>
-
-</div>
-
-<script>
-const DISCORD_ID = "321059127172530178";
-
-fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`)
-  .then(res => res.json())
-  .then(data => {
-
-    const d = data.data;
-
-    document.getElementById("status").innerText =
-      (d.discord_status || "offline").toUpperCase();
-
-    const activity = d.activities?.find(a => a.type === 0);
-
-    document.getElementById("activity").innerText =
-      activity ? activity.name.toUpperCase() : "NONE";
-  })
-  .catch(() => {
-    document.getElementById("status").innerText = "OFFLINE";
-    document.getElementById("activity").innerText = "UNKNOWN";
-  });
-</script>
-
+        document.addEventListener('click', startAudio);
+        document.addEventListener('keydown', startAudio);
+    </script>
 </body>
 </html>
