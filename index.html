@@ -1,114 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Demoniceye</title>
+<meta charset="UTF-8">
+<title>Demoniceye Profile</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: black;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<style>
+body {
+  margin: 0;
+  background: #050505;
+  color: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-    .card {
-      background: #111;
-      padding: 25px;
-      border-radius: 15px;
-      width: 350px;
-      text-align: center;
-      box-shadow: 0 0 20px red;
-    }
+.card {
+  width: 380px;
+  background: #0d0d0d;
+  border-radius: 16px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 0 25px red;
+  border: 1px solid #220000;
+}
 
-    h1 {
-      color: red;
-      margin-bottom: 10px;
-    }
+.avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px solid red;
+}
 
-    textarea {
-      width: 100%;
-      height: 80px;
-      background: black;
-      color: white;
-      border: 1px solid red;
-      border-radius: 8px;
-      padding: 10px;
-      resize: none;
-    }
+h1 {
+  margin: 10px 0 5px;
+  color: red;
+}
 
-    button {
-      margin-top: 10px;
-      padding: 10px;
-      width: 100%;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+.bio {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 15px;
+}
 
-    .steam {
-      background: #1b2838;
-      color: white;
-    }
+.status-box {
+  background: #111;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px 0;
+  font-size: 14px;
+}
 
-    .discord {
-      background: #5865F2;
-      color: white;
-    }
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
 
-    .copy {
-      background: red;
-      color: white;
-    }
+.steam {
+  background: #1b2838;
+  color: white;
+}
 
-    img {
-      width: 80px;
-      border-radius: 50%;
-      margin-bottom: 10px;
-      border: 2px solid red;
-    }
-  </style>
+.discord {
+  background: #5865F2;
+  color: white;
+}
+
+a {
+  text-decoration: none;
+}
+</style>
 </head>
 
 <body>
 
 <div class="card">
 
-  <!-- صورة الديسكورد -->
-  <img src="https://i.imgur.com/placeholder.png" alt="Discord Avatar">
+  <!-- Discord Avatar (from Lanyard) -->
+  <img id="avatar" class="avatar" src="" />
 
   <h1>Demoniceye</h1>
 
-  <!-- بايو -->
-  <textarea placeholder="Write your bio here..."></textarea>
+  <div class="bio">
+    Watching from the shadows.
+  </div>
 
-  <!-- زر ستيم -->
-  <button class="steam" onclick="window.open('https://steamcommunity.com/id/YOURID')">
-    Steam Profile
-  </button>
+  <!-- Discord Status / RPC -->
+  <div class="status-box">
+    Status: <span id="status">Loading...</span><br>
+    Activity: <span id="activity">Loading...</span>
+  </div>
 
-  <!-- زر ديسكورد -->
-  <button class="discord" onclick="window.open('https://discord.com/users/YOURID')">
-    Open Discord Profile
-  </button>
+  <!-- Steam -->
+  <a href="https://steamcommunity.com/id/Demons-eye" target="_blank">
+    <button class="steam">Steam Profile</button>
+  </a>
 
-  <!-- زر نسخ اليوزر -->
-  <button class="copy" onclick="copyUser()">
-    Copy Discord Username
-  </button>
+  <!-- Discord -->
+  <a href="https://discord.com/users/321059127172530178" target="_blank">
+    <button class="discord">Open Discord Profile</button>
+  </a>
 
 </div>
 
 <script>
-function copyUser() {
-  navigator.clipboard.writeText("YOUR_DISCORD_USERNAME");
-  alert("Copied Discord username!");
-}
+// Discord ID
+const DISCORD_ID = "321059127172530178";
+
+// Lanyard API (Discord presence)
+fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`)
+  .then(res => res.json())
+  .then(data => {
+
+    const d = data.data;
+
+    // Avatar
+    document.getElementById("avatar").src =
+      `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${d.discord_user.avatar}.png`;
+
+    // Status
+    document.getElementById("status").innerText =
+      d.discord_status;
+
+    // Activity / RPC
+    const activity = d.activities?.find(a => a.type === 0);
+
+    document.getElementById("activity").innerText =
+      activity ? activity.name : "Nothing";
+  })
+  .catch(() => {
+    document.getElementById("status").innerText = "Offline";
+    document.getElementById("activity").innerText = "Unavailable";
+  });
 </script>
 
 </body>
