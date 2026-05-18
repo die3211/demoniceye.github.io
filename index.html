@@ -2,141 +2,225 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Demoniceye Profile</title>
+<title>Demoniceye - Killer Lobby</title>
 
 <style>
 body {
   margin: 0;
-  background: #050505;
-  color: white;
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  cursor: crosshair;
+  background: black;
 }
 
-.card {
-  width: 380px;
-  background: #0d0d0d;
-  border-radius: 16px;
-  padding: 25px;
-  text-align: center;
-  box-shadow: 0 0 25px red;
-  border: 1px solid #220000;
+/* ===== BACKGROUND (PUT WESKER IMAGE HERE) ===== */
+.bg {
+  position: fixed;
+  inset: 0;
+  background-image: url("Wesker.png");
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.35) contrast(1.2) saturate(0.8);
+  transform: scale(1.05);
 }
 
-.avatar {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  border: 2px solid red;
+/* cinematic dark overlay */
+.bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(0,0,0,0.2),
+    rgba(0,0,0,0.88)
+  );
 }
 
-h1 {
-  margin: 10px 0 5px;
-  color: red;
+/* scanlines like DBD */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255,0,0,0.05),
+    rgba(0,0,0,0.02) 2px,
+    transparent 4px
+  );
+  animation: scan 6s linear infinite;
+  pointer-events: none;
 }
 
-.bio {
-  font-size: 14px;
-  opacity: 0.8;
-  margin-bottom: 15px;
+@keyframes scan {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(40px); }
 }
 
-.status-box {
-  background: #111;
-  padding: 10px;
-  border-radius: 10px;
-  margin: 10px 0;
-  font-size: 14px;
+/* ===== UI LAYER ===== */
+.ui {
+  position: relative;
+  z-index: 2;
+  color: #eaeaea;
 }
 
-button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 8px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
+/* LEFT MENU */
+.menu {
+  position: absolute;
+  left: 80px;
+  top: 120px;
+  width: 420px;
 }
 
-.steam {
-  background: #1b2838;
-  color: white;
+.title {
+  font-size: 36px;
+  letter-spacing: 8px;
+  color: #ff2a2a;
+  text-transform: uppercase;
 }
 
-.discord {
-  background: #5865F2;
-  color: white;
+.subtitle {
+  font-size: 11px;
+  opacity: 0.6;
+  letter-spacing: 3px;
+  margin-top: 6px;
 }
 
-a {
-  text-decoration: none;
+.hr {
+  height: 1px;
+  background: #2b0000;
+  margin: 18px 0;
+}
+
+.item {
+  padding: 12px;
+  margin-top: 10px;
+  border: 1px solid #2b0000;
+  background: rgba(20,0,0,0.4);
+  letter-spacing: 2px;
+  transition: 0.2s;
+}
+
+.item:hover {
+  border-color: #ff2a2a;
+  background: rgba(255,0,0,0.12);
+  transform: translateX(6px);
+}
+
+/* RIGHT PANEL */
+.panel {
+  position: absolute;
+  right: 80px;
+  top: 120px;
+  width: 320px;
+}
+
+.box {
+  padding: 14px;
+  border: 1px solid #2b0000;
+  background: rgba(10,0,0,0.6);
+  margin-bottom: 12px;
+}
+
+.label {
+  font-size: 10px;
+  color: #ff2a2a;
+  letter-spacing: 2px;
+}
+
+.value {
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.heartbeat {
+  color: #ff2a2a;
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
+<!-- BACKGROUND -->
+<div class="bg"></div>
 
-  <!-- Discord Avatar (from Lanyard) -->
-  <img id="avatar" class="avatar" src="" />
+<!-- UI -->
+<div class="ui">
 
-  <h1>Demoniceye</h1>
+  <!-- LEFT MENU -->
+  <div class="menu">
+    <div class="title">KILLER</div>
+    <div class="subtitle">ENTITY LOBBY ACTIVE</div>
 
-  <div class="bio">
-    Watching from the shadows.
+    <div class="hr"></div>
+
+    <div class="item">PLAY</div>
+    <div class="item">LOADOUT</div>
+    <div class="item">PROFILE</div>
+
+    <div class="item" onclick="window.open('https://steamcommunity.com/id/Demons-eye')">
+      STEAM PROFILE
+    </div>
+
+    <div class="item" onclick="window.open('https://discord.com/users/321059127172530178')">
+      DISCORD PROFILE
+    </div>
   </div>
 
-  <!-- Discord Status / RPC -->
-  <div class="status-box">
-    Status: <span id="status">Loading...</span><br>
-    Activity: <span id="activity">Loading...</span>
+  <!-- RIGHT PANEL -->
+  <div class="panel">
+
+    <div class="box">
+      <div class="label">NAME</div>
+      <div class="value">DEMONICEYE</div>
+    </div>
+
+    <div class="box">
+      <div class="label">DISCORD STATUS</div>
+      <div class="value heartbeat" id="status">SCANNING</div>
+    </div>
+
+    <div class="box">
+      <div class="label">ACTIVITY (RPC)</div>
+      <div class="value" id="activity">DETECTING</div>
+    </div>
+
+    <div class="box">
+      <div class="label">STEAM ID</div>
+      <div class="value">Demons-eye</div>
+    </div>
+
   </div>
-
-  <!-- Steam -->
-  <a href="https://steamcommunity.com/id/Demons-eye" target="_blank">
-    <button class="steam">Steam Profile</button>
-  </a>
-
-  <!-- Discord -->
-  <a href="https://discord.com/users/321059127172530178" target="_blank">
-    <button class="discord">Open Discord Profile</button>
-  </a>
 
 </div>
 
 <script>
-// Discord ID
 const DISCORD_ID = "321059127172530178";
 
-// Lanyard API (Discord presence)
 fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`)
   .then(res => res.json())
   .then(data => {
 
     const d = data.data;
 
-    // Avatar
-    document.getElementById("avatar").src =
-      `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${d.discord_user.avatar}.png`;
-
-    // Status
     document.getElementById("status").innerText =
-      d.discord_status;
+      (d.discord_status || "offline").toUpperCase();
 
-    // Activity / RPC
     const activity = d.activities?.find(a => a.type === 0);
 
     document.getElementById("activity").innerText =
-      activity ? activity.name : "Nothing";
+      activity ? activity.name.toUpperCase() : "NONE";
   })
   .catch(() => {
-    document.getElementById("status").innerText = "Offline";
-    document.getElementById("activity").innerText = "Unavailable";
+    document.getElementById("status").innerText = "OFFLINE";
+    document.getElementById("activity").innerText = "UNKNOWN";
   });
 </script>
 
